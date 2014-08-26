@@ -1,12 +1,10 @@
 package asaf.david.filenc;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -94,7 +92,7 @@ public class FileZip
 		}
 		catch (ZipException e)
 		{
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -188,15 +186,7 @@ public class FileZip
 		if (m_password == null)
 		{
 			System.out.print("Enter password: ");
-			BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-			try
-			{
-				m_password = bufferRead.readLine();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			m_password = String.valueOf(System.console().readPassword());
 		}
 
 		return m_password;

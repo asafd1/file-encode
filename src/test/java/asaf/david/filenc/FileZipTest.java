@@ -15,7 +15,7 @@ import asaf.david.filenc.FileZip.ACTION;
  */
 public class FileZipTest extends TestCase
 {
-	private static String RESOURCES_DIR = "src\\main\\resources";
+	private static String RESOURCES_DIR = "src\\test\\resources";
 	private static File FILE1 = new File(RESOURCES_DIR, "a.txt");
 	private static File FILE2 = new File(RESOURCES_DIR, "\\f1\\b.txt");
 	private static File FILE3 = new File(RESOURCES_DIR, "\\f2\\a.txt");

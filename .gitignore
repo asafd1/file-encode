@@ -2,4 +2,4 @@
 .project
 target/*
 .settings
-src/main/resources/*
+src/test/resources/*
