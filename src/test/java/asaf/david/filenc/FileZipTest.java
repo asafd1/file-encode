@@ -15,13 +15,11 @@ import asaf.david.filenc.FileZip.ACTION;
  */
 public class FileZipTest extends TestCase
 {
+	private static String TEST_PASSWORD = "pass";
 	private static String RESOURCES_DIR = "src\\test\\resources";
 	private static File FILE1 = new File(RESOURCES_DIR, "a.txt");
 	private static File FILE2 = new File(RESOURCES_DIR, "\\f1\\b.txt");
 	private static File FILE3 = new File(RESOURCES_DIR, "\\f2\\a.txt");
-	private static File ENCRYPTED_FILE1 = new File(FILE1.getAbsoluteFile() + "{z}.zip");
-	private static File ENCRYPTED_FILE2 = new File(FILE2.getAbsoluteFile() + "{z}.zip");
-	private static File ENCRYPTED_FILE3 = new File(FILE3.getAbsoluteFile() + "{z}.zip");
 	private static String CONTENT1 = "content1";
 	private static String CONTENT2 = "content2";
 	private static String CONTENT3 = "content3";
@@ -43,27 +41,27 @@ public class FileZipTest extends TestCase
 	{
 		FileZip fz = prepare();
 		fz.act(FILE1, ACTION.ENCRYPT);
-		assertTrue("coulnd't find resulting zip file", ENCRYPTED_FILE1.exists());
+		assertTrue("coulnd't find resulting zip file", new File(fz.getZipFileName(FILE1)).exists());
 	}
 
 	public void testEncodeFolder() throws Exception
 	{
 		FileZip fz = prepare();
 		fz.act(new File(RESOURCES_DIR), ACTION.ENCRYPT);
-		assertTrue("coulnd't find resulting zip file", ENCRYPTED_FILE1.exists());
-		assertTrue("coulnd't find resulting zip file", ENCRYPTED_FILE2.exists());
-		assertTrue("coulnd't find resulting zip file", ENCRYPTED_FILE3.exists());
+		assertTrue("coulnd't find resulting zip file", new File(fz.getZipFileName(FILE1)).exists());
+		assertTrue("coulnd't find resulting zip file", new File(fz.getZipFileName(FILE2)).exists());
+		assertTrue("coulnd't find resulting zip file", new File(fz.getZipFileName(FILE3)).exists());
 	}
 
 	public void testDecodeSingleFile() throws Exception
 	{
 		FileZip fz = prepare();
 		fz.act(FILE1, ACTION.ENCRYPT);
-		assertTrue("coulnd't find resulting zip file", ENCRYPTED_FILE1.exists());
+		assertTrue("coulnd't find resulting zip file", new File(fz.getZipFileName(FILE1)).exists());
 
 		Files.delete(FILE1.toPath());
 
-		fz.act(ENCRYPTED_FILE1, ACTION.DECRYPT);
+		fz.act(new File(fz.getZipFileName(FILE1)), ACTION.DECRYPT);
 		assertTrue("coulnd't find extracted file", FILE1.exists());
 
 		String content = readFile(FILE1);
@@ -81,9 +79,9 @@ public class FileZipTest extends TestCase
 		Files.delete(FILE3.toPath());
 
 		fz.act(f, ACTION.DECRYPT);
-		assertTrue("coulnd't find extracted file", ENCRYPTED_FILE1.exists());
-		assertTrue("coulnd't find extracted file", ENCRYPTED_FILE2.exists());
-		assertTrue("coulnd't find extracted file", ENCRYPTED_FILE3.exists());
+		assertTrue("coulnd't find extracted file", new File(fz.getZipFileName(FILE1)).exists());
+		assertTrue("coulnd't find extracted file", new File(fz.getZipFileName(FILE2)).exists());
+		assertTrue("coulnd't find extracted file", new File(fz.getZipFileName(FILE3)).exists());
 
 		String content1 = readFile(FILE1);
 		String content2 = readFile(FILE2);
@@ -105,7 +103,7 @@ public class FileZipTest extends TestCase
 		createFile(FILE3, CONTENT3);
 
 		FileZip fz = new FileZip();
-		fz.setTestPass("pass");
+		fz.setTestPass(TEST_PASSWORD);
 		return fz;
 	}
 

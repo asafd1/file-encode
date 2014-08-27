@@ -176,9 +176,16 @@ public class FileZip
 		}
 	}
 
-	private String getZipFileName(File file)
+	public String getZipFileName(File file)
 	{
-		return file.getAbsolutePath() + "{z}.zip";
+		String path = file.getAbsolutePath();
+		int ix = path.lastIndexOf('.');
+		if (ix != -1)
+		{
+			return path.substring(0, ix) + "{z}" + path.substring(ix);
+		}
+
+		return path + "{z}";
 	}
 
 	private String getPassword()
