@@ -87,7 +87,7 @@ public class FileZip
 		try
 		{
 			ZipFile zipFile = new ZipFile(file);
-			zipFile.setPassword(getPassword());
+			zipFile.setPassword(getPassword(false));
 			zipFile.extractAll(file.getParent());
 		}
 		catch (ZipException e)
@@ -120,7 +120,7 @@ public class FileZip
 
 			parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
 
-			parameters.setPassword(getPassword());
+			parameters.setPassword(getPassword(true));
 
 			outputStream.putNextEntry(file, parameters);
 
@@ -188,12 +188,35 @@ public class FileZip
 		return path + "{z}";
 	}
 
-	private String getPassword()
+	private String getPassword(boolean validate)
 	{
 		if (m_password == null)
 		{
-			System.out.print("Enter password: ");
-			m_password = String.valueOf(System.console().readPassword());
+			while (true)
+			{
+				System.out.print("Enter password: ");
+				String pass1 = String.valueOf(System.console().readPassword());
+
+				if (validate)
+				{
+					System.out.print("Enter password again: ");
+					String pass2 = String.valueOf(System.console().readPassword());
+					if (pass2.equals(pass1))
+					{
+						m_password = pass1;
+						break;
+					}
+					else
+					{
+						System.out.print("Passwords don't match. Try again. ");
+					}
+				}
+				else
+				{
+					m_password = pass1;
+					break;
+				}
+			}
 		}
 
 		return m_password;
