@@ -75,10 +75,12 @@ public class FileZip
 		if (action == ACTION.ENCRYPT)
 		{
 			encryptFile(file);
+			file.delete();
 		}
 		else
 		{
 			decryptFile(file);
+			file.delete();
 		}
 	}
 
